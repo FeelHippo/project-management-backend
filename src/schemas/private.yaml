@@ -1,0 +1,304 @@
+openapi: '3.0.0'
+info:
+  version: 1.0.0
+  title: Project Management Dashboard
+  description: coding exercise
+  termsOfService: https://swagger.io/terms/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers: [{"url": "/api"}]
+paths:
+  /projects:
+    get:
+      summary: Get All Projects
+      responses:
+        '200':
+          description: All Projects Data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  projects:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: Short name of the project, max 64 char
+                        tags:
+                          type: array
+                          items:
+                            type: string
+                            description: Short list of tags
+                        description:
+                          type: string
+                          description: Longer description of the object, max 256 char
+                        status:
+                          type: string
+                          enum: ["NEW", "COMPLETED", "TERMINATED", "TERMINATED"]
+                          description: Current state of the project
+                        createdAt:
+                          type: string
+                          description: Date project was inserted into DB
+                        updatedAt:
+                          type: string
+                          description: Date project was updated on DB
+                        wasUpdated:
+                          type: string
+                          description: Whether the project has been updated
+                        archivedAt,:
+                          type: string
+                          description: Date project was archived on DB
+                        wasArchived,:
+                          type: string
+                          description: Whether the project has been archived
+        '422':
+          description: Validation error
+        '401':
+          description: The token fails verification
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: Server error
+    post:
+      summary: Create New Project
+      requestBody:
+        description: Receives Data and Creates Project
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Short name of the project, max 64 char
+                tags:
+                  type: array
+                  items:
+                    type: string
+                    description: Short list of tags
+                description:
+                  type: string
+                  description: Longer description of the object, max 256 char
+                status:
+                  type: string
+                  enum: ["NEW", "COMPLETED", "TERMINATED", "TERMINATED"]
+                  description: Current state of the project
+              required:
+                - name
+                - description
+                - status
+      responses:
+        '201':
+          description: Resource was created
+        '422':
+          description: Validation error
+        '401':
+          description: The token fails verification
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+        '415':
+          description: Unsupported Media Type
+        '429':
+          description: Too many requests
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: Server error
+  /projects/{id}:
+    get:
+      summary: Get One Project by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: Project unique ID
+          required: true
+      responses:
+        '200':
+          description: Project Data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  project:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: Short name of the project, max 64 char
+                      tags:
+                        type: array
+                        items:
+                          type: string
+                          description: Short list of tags
+                      description:
+                        type: string
+                        description: Longer description of the object, max 256 char
+                      status:
+                        type: string
+                        enum: ["NEW", "COMPLETED", "TERMINATED", "TERMINATED"]
+                        description: Current state of the project
+                      createdAt:
+                        type: string
+                        description: Date project was inserted into DB
+                      updatedAt:
+                        type: string
+                        description: Date project was updated on DB
+                      wasUpdated:
+                        type: string
+                        description: Whether the project has been updated
+                      archivedAt,:
+                        type: string
+                        description: Date project was archived on DB
+                      wasArchived,:
+                        type: string
+                        description: Whether the project has been archived
+        '422':
+          description: Validation error
+        '401':
+          description: The token fails verification
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: Server error
+    patch:
+      summary: Partially Update an Existing Project
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: Project unique ID
+          required: true
+      requestBody:
+        description: Provide a list of properties that need update
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                changes:
+                  type: array
+                  items:
+                    type: object
+                    oneOf:
+                      - properties:
+                          property:
+                            type: string
+                            enum: [ name, description, status ]
+                          value:
+                            type: string
+                      - properties:
+                          property:
+                            type: string
+                            enum: [ tags ]
+                          value:
+                            type: array
+                            items:
+                              type: string
+                    required:
+                      - property
+                      - value
+              required:
+                - changes
+      responses:
+        '204':
+          description: The status of the request
+        '422':
+          description: Validation error
+        '401':
+          description: The token fails verification
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+        '415':
+          description: Unsupported Media Type
+        '429':
+          description: Too many requests
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: Server error
+    delete:
+      summary: Delete a Project by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: the unique id of the project
+          required: true
+      responses:
+        '200':
+          description: The status of the request
+        '422':
+          description: Validation error
+        '401':
+          description: The token fails verification
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+        '415':
+          description: Unsupported Media Type
+        '429':
+          description: Too many requests
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: Server error
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: api-key
