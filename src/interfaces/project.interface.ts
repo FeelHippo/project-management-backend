@@ -9,6 +9,7 @@ export enum Status {
 export interface Project {
   uid: string;
   name: string;
+  tags: string[];
   description: string;
   status: Status;
   createdAt: Date;

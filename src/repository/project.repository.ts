@@ -24,7 +24,7 @@ export default class ProjectRepository {
           row["description"],
           row["createdAt"],
           row["updatedAt"],
-          row["deletedAt"],
+          row["archivedAt"],
         ),
     );
   }
@@ -47,20 +47,18 @@ export default class ProjectRepository {
       row["description"],
       row["createdAt"],
       row["updatedAt"],
-      row["deletedAt"],
+      row["archivedAt"],
     );
   }
 
   async createOne(
     name: string,
     description: string,
-    status: string,
     tags: string[],
   ): Promise<void> {
     await this._db.insert(this._schema).values({
       name,
       description,
-      status,
       tags,
     });
   }
@@ -69,10 +67,11 @@ export default class ProjectRepository {
     uid: string,
     changes: { property: string; value: string }[],
   ): Promise<void> {
-    for (const change of changes) {
+    for (const { property, value } of changes) {
+      console.log(property, value);
       await this._db
         .update(this._schema)
-        .set(change)
+        .set({ [property]: value })
         .where(eq(this._schema["uid"], uid));
     }
   }

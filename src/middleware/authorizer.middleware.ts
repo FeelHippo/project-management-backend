@@ -7,7 +7,7 @@ export default (
   response: Response,
   next: NextFunction,
 ): void => {
-  const api_key = request.headers["api-key"] as string;
+  const api_key = request.headers["x-api-key"] as string;
 
   if (!api_key || api_key !== config.authorization.api_key) {
     response.status(StatusCodes.UNAUTHORIZED).send();

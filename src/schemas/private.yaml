@@ -25,6 +25,10 @@ paths:
                     items:
                       type: object
                       properties:
+                        uid:
+                          type: string
+                          format: uuid
+                          description: Unique identifier of the project
                         name:
                           type: string
                           description: Short name of the project, max 64 char
@@ -38,23 +42,31 @@ paths:
                           description: Longer description of the object, max 256 char
                         status:
                           type: string
-                          enum: ["NEW", "COMPLETED", "TERMINATED", "TERMINATED"]
+                          enum: ["NEW", "IN_PROGRESS", "COMPLETED", "ARCHIVED", "TERMINATED"]
                           description: Current state of the project
                         createdAt:
                           type: string
+                          format: date-time
                           description: Date project was inserted into DB
                         updatedAt:
                           type: string
+                          format: date-time
                           description: Date project was updated on DB
+                          nullable: true
                         wasUpdated:
-                          type: string
+                          type: boolean
                           description: Whether the project has been updated
                         archivedAt,:
                           type: string
+                          format: date-time
                           description: Date project was archived on DB
-                        wasArchived,:
-                          type: string
+                          nullable: true
+                        wasArchived:
+                          type: boolean
                           description: Whether the project has been archived
+                        isStoredOnDB:
+                          type: boolean
+                          description: Whether the project has been stored on DB
         '422':
           description: Validation error
         '401':
@@ -94,14 +106,10 @@ paths:
                 description:
                   type: string
                   description: Longer description of the object, max 256 char
-                status:
-                  type: string
-                  enum: ["NEW", "COMPLETED", "TERMINATED", "TERMINATED"]
-                  description: Current state of the project
               required:
                 - name
+                - tags
                 - description
-                - status
       responses:
         '201':
           description: Resource was created
@@ -148,6 +156,10 @@ paths:
                   project:
                     type: object
                     properties:
+                      uid:
+                        type: string
+                        format: uuid
+                        description: Unique identifier of the project
                       name:
                         type: string
                         description: Short name of the project, max 64 char
@@ -161,23 +173,31 @@ paths:
                         description: Longer description of the object, max 256 char
                       status:
                         type: string
-                        enum: ["NEW", "COMPLETED", "TERMINATED", "TERMINATED"]
+                        enum: ["NEW", "IN_PROGRESS", "COMPLETED", "ARCHIVED", "TERMINATED"]
                         description: Current state of the project
                       createdAt:
                         type: string
+                        format: date-time
                         description: Date project was inserted into DB
                       updatedAt:
                         type: string
+                        format: date-time
                         description: Date project was updated on DB
+                        nullable: true
                       wasUpdated:
-                        type: string
+                        type: boolean
                         description: Whether the project has been updated
                       archivedAt,:
                         type: string
+                        format: date-time
                         description: Date project was archived on DB
-                      wasArchived,:
-                        type: string
+                        nullable: true
+                      wasArchived:
+                        type: boolean
                         description: Whether the project has been archived
+                      isStoredOnDB:
+                        type: boolean
+                        description: Whether the project has been stored on DB
         '422':
           description: Validation error
         '401':
@@ -301,4 +321,4 @@ components:
     ApiKeyAuth:
       type: apiKey
       in: header
-      name: api-key
+      name: x-api-key

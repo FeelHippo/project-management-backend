@@ -7,11 +7,11 @@ import Container from "../dependencies/container";
 import { NodePgDatabase } from "drizzle-orm/node-postgres";
 
 class ProjectController {
-  constructor(container: Container & { db: NodePgDatabase }) {
-    this._repository = new ProjectRepository(container.db, users);
+  constructor(repository: ProjectRepository) {
+    this._repository = repository;
   }
 
-  private readonly _repository: ProjectRepository;
+  private _repository: ProjectRepository;
   async allProjects(_req: Request, res: Response): Promise<void> {
     try {
       const data = await this._repository.readAll();
@@ -20,24 +20,29 @@ class ProjectController {
           uid,
           name,
           description,
+          tags,
           status,
           createdAt,
           updatedAt,
           wasUpdated,
           archivedAt,
           wasArchived,
+          isStoredOnDB,
         }) => ({
           uid,
           name,
           description,
+          tags,
           status,
           createdAt,
           updatedAt,
           wasUpdated,
           archivedAt,
           wasArchived,
+          isStoredOnDB,
         }),
       );
+      console.log(projects);
       res.status(StatusCodes.OK).send({ projects });
     } catch (error: any) {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error });
@@ -51,23 +56,27 @@ class ProjectController {
         uid,
         name,
         description,
+        tags,
         status,
         createdAt,
         updatedAt,
         wasUpdated,
         archivedAt,
         wasArchived,
+        isStoredOnDB,
       } = await this._repository.readOne(id);
       const project = {
         uid,
         name,
         description,
+        tags,
         status,
         createdAt,
         updatedAt,
         wasUpdated,
         archivedAt,
         wasArchived,
+        isStoredOnDB,
       };
       res.status(StatusCodes.OK).send({ project });
     } catch (error: any) {
@@ -77,11 +86,11 @@ class ProjectController {
 
   async addProject(req: Request, res: Response): Promise<void> {
     try {
-      const { name, description, status, tags } = req.body as Pick<
+      const { name, description, tags } = req.body as Pick<
         Project,
-        "name" | "description" | "status" | "tags"
+        "name" | "description" | "tags"
       >;
-      await this._repository.createOne(name, description, status, tags);
+      await this._repository.createOne(name, description, tags);
       res.status(StatusCodes.CREATED).send();
     } catch (error: any) {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error });

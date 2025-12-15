@@ -8,8 +8,8 @@ export class ProjectModel {
     status: Status,
     description: string,
     createdAt: Date,
-    updatedAt: Date,
-    deletedAt: Date,
+    updatedAt: Date | null,
+    archivedAt: Date | null,
   ) {
     this._uid = uid;
     this._name = name;
@@ -18,7 +18,7 @@ export class ProjectModel {
     this._status = status;
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
-    this._archivedAt = deletedAt;
+    this._archivedAt = archivedAt;
   }
 
   private readonly _uid: string;
@@ -27,8 +27,8 @@ export class ProjectModel {
   private readonly _description: string;
   private readonly _status: Status;
   private readonly _createdAt: Date;
-  private readonly _updatedAt: Date;
-  private readonly _archivedAt: Date;
+  private readonly _updatedAt: Date | null;
+  private readonly _archivedAt: Date | null;
 
   public get uid() {
     return this._uid;
