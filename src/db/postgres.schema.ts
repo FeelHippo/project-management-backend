@@ -8,16 +8,15 @@ import {
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
-const status = pgEnum("status", [
+export const statusEnum = pgEnum("status", [
   "NEW",
+  "IN_PROGRESS",
   "COMPLETED",
+  "ARCHIVED",
   "TERMINATED",
-  "TERMINATED",
-])()
-  .default("NEW")
-  .notNull();
+]);
 
-const timestamps = {
+export const timestamps = {
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp(),
   archivedAt: timestamp(),
@@ -36,6 +35,6 @@ export const users = pgTable("projects", {
     .default(sql`'{}'::text[]`),
   // required project description
   description: varchar({ length: 256 }).notNull(),
-  status,
+  status: statusEnum().default("NEW").notNull(),
   ...timestamps,
 });
