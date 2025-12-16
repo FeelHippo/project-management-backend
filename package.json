@@ -6,6 +6,7 @@
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "build": "tsc --noCheck",
+    "dev": "NODE_ENV=dev && npm start",
     "start": "npm run build && nodemon ./dist/index.js",
     "test": "echo HELLO"
   },
@@ -24,6 +25,7 @@
     "pg": "^8.16.3",
     "prettier": "^3.6.2",
     "sqlite3": "^5.1.7",
+    "supertokens-node": "^23.0.1",
     "swagger-ui-express": "^5.0.1",
     "yamljs": "^0.3.0"
   },

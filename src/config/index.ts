@@ -18,6 +18,10 @@ const config: ConfigInterface = {
   authorization: {
     api_key: getEnvironmentVariable("API_KEY"),
   },
+  supertokens: {
+    connectionURI: getEnvironmentVariable("SUPER_TOKENS_URI"),
+    apiKey: getEnvironmentVariable("SUPER_TOKENS_KEY"),
+  },
 };
 
 export default config;

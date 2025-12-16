@@ -9,6 +9,11 @@ import YAML from "yamljs";
 import appRouter from "./routes/app.routes";
 import * as fs from "node:fs";
 
+import "./supertokens/sdk.init";
+import supertokens from "supertokens-node";
+import { middleware } from "supertokens-node/framework/express";
+import { errorHandler } from "supertokens-node/framework/express";
+
 const app = express();
 
 // Swagger Docs
@@ -17,7 +22,13 @@ const swaggerDocument = YAML.parse(file);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Middlewares
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // TODO(Filippo): replace with AWS Amplify origin
+    allowedHeaders: ["content-type", ...supertokens.getAllCORSHeaders()],
+    credentials: true,
+  }),
+);
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -39,8 +50,14 @@ app.use((err: any, _req: any, res: any, _next: any) => {
   });
 });
 
+// SuperTokens /auth middleware
+app.use(middleware());
+
 // Routes
 app.use("/api", appRouter);
+
+// SuperTokens Error Handler
+app.use(errorHandler());
 
 // Fallback route (for unknown endpoints)
 app.use((_req, res) => {
