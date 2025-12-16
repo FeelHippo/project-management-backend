@@ -68,7 +68,6 @@ export default class ProjectRepository {
     changes: { property: string; value: string }[],
   ): Promise<void> {
     for (const { property, value } of changes) {
-      console.log(property, value);
       await this._db
         .update(this._schema)
         .set({ [property]: value })

@@ -1,10 +1,8 @@
 import { Request, Response } from "express";
-import { users } from "../db/postgres.schema";
 import ProjectRepository from "../repository/project.repository";
 import { StatusCodes } from "http-status-codes";
 import { Project } from "../interfaces/project.interface";
-import Container from "../dependencies/container";
-import { NodePgDatabase } from "drizzle-orm/node-postgres";
+import { ProjectModel } from "../data/project.entity";
 
 class ProjectController {
   constructor(repository: ProjectRepository) {
@@ -42,7 +40,6 @@ class ProjectController {
           isStoredOnDB,
         }),
       );
-      console.log(projects);
       res.status(StatusCodes.OK).send({ projects });
     } catch (error: any) {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error });
@@ -64,7 +61,7 @@ class ProjectController {
         archivedAt,
         wasArchived,
         isStoredOnDB,
-      } = await this._repository.readOne(id);
+      } = (await this._repository.readOne(id)) as ProjectModel;
       const project = {
         uid,
         name,

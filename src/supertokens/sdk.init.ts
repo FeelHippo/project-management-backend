@@ -9,14 +9,8 @@ supertokens.init({
   appInfo: {
     // learn more about this on https://supertokens.com/docs/session/appinfo
     appName: "project-management",
-    apiDomain:
-      process.env["NODE_ENV"] == "dev"
-        ? "http://localhost:8080"
-        : (process.env["AWS_EBS_DOMAIN"] as string),
-    websiteDomain:
-      process.env["NODE_ENV"] == "dev"
-        ? "http://localhost:3000"
-        : (process.env["AWS_AMP_DOMAIN"] as string),
+    apiDomain: process.env["AWS_EBS_DOMAIN"] ?? "http://localhost:8080",
+    websiteDomain: process.env["AWS_AMP_DOMAIN"] ?? "http://localhost:3000",
     apiBasePath: "/auth",
     websiteBasePath: "/auth",
   },

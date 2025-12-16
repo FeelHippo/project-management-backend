@@ -24,8 +24,12 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Middlewares
 app.use(
   cors({
-    origin: "http://localhost:3000", // TODO(Filippo): replace with AWS Amplify origin
-    allowedHeaders: ["content-type", ...supertokens.getAllCORSHeaders()],
+    origin: process.env["AWS_AMP_DOMAIN"] ?? "http://localhost:3000",
+    allowedHeaders: [
+      "content-type",
+      "x-api-key",
+      ...supertokens.getAllCORSHeaders(),
+    ],
     credentials: true,
   }),
 );
