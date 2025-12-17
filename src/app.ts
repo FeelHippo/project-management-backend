@@ -22,17 +22,11 @@ const swaggerDocument = YAML.parse(file);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Middlewares
-const whitelist = ['https://main.d3bd2fu6kg05nw.amplifyapp.com', 'http://localhost:3000']
 app.use(
   cors({
     origin: function (origin, callback) {
-        if (!!origin && whitelist.indexOf(origin) !== -1) {
-            callback(null, true)
-        } else {
-            // DEV ONLY: the below is for Postman
-            // callback(null, true)
-            callback(new Error('Not allowed by CORS'))
-        }
+      console.info("New Request from ", origin);
+      callback(null, true);
     },
     allowedHeaders: [
       "content-type",
