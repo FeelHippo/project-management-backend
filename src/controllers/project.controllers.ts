@@ -10,7 +10,7 @@ class ProjectController {
   }
 
   private _repository: ProjectRepository;
-  async allProjects(req: Request, res: Response): Promise<void> {
+  async allProjects(_req: Request, res: Response): Promise<void> {
     try {
       console.info("Request Start: allProjects");
       const data = await this._repository.readAll();
