@@ -12,7 +12,6 @@ const appInfo = {
     websiteBasePath: "/auth",
 };
 
-console.log('||| This is your supertokens configuration: ', appInfo)
 supertokens.init({
   framework: "express",
   supertokens: config.supertokens,
