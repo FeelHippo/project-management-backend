@@ -54,6 +54,10 @@ class ProjectController {
     try {
       console.info("Request Start: projectById");
       const { id } = req.params as { id: string };
+      const data = (await this._repository.readOne(id)) as ProjectModel;
+      if (!data) {
+        res.status(StatusCodes.NOT_FOUND).send();
+      }
       const {
         uid,
         name,
@@ -66,22 +70,23 @@ class ProjectController {
         archivedAt,
         wasArchived,
         isStoredOnDB,
-      } = (await this._repository.readOne(id)) as ProjectModel;
-      const project = {
-        uid,
-        name,
-        description,
-        tags,
-        status,
-        createdAt,
-        updatedAt,
-        wasUpdated,
-        archivedAt,
-        wasArchived,
-        isStoredOnDB,
-      };
-      console.info("Request Project: projectById\n", project);
-      res.status(StatusCodes.OK).send({ project });
+      } = data;
+      console.info("Request Project: projectById\n", data);
+      res.status(StatusCodes.OK).send({
+        project: {
+          uid,
+          name,
+          description,
+          tags,
+          status,
+          createdAt,
+          updatedAt,
+          wasUpdated,
+          archivedAt,
+          wasArchived,
+          isStoredOnDB,
+        },
+      });
     } catch (error: any) {
       console.error("ERROR: projectById\n", error);
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error });
