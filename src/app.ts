@@ -11,8 +11,8 @@ import * as fs from "node:fs";
 
 import "./supertokens/sdk.init";
 import supertokens from "supertokens-node";
-// import { middleware } from "supertokens-node/framework/express";
-// import { errorHandler } from "supertokens-node/framework/express";
+import { middleware } from "supertokens-node/framework/express";
+import { errorHandler } from "supertokens-node/framework/express";
 
 const app = express();
 
@@ -22,9 +22,18 @@ const swaggerDocument = YAML.parse(file);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Middlewares
+const whitelist = ['https://main.d3bd2fu6kg05nw.amplifyapp.com', 'http://localhost:3000']
 app.use(
   cors({
-    origin: true,
+    origin: function (origin, callback) {
+        if (!!origin && whitelist.indexOf(origin) !== -1) {
+            callback(null, true)
+        } else {
+            // DEV ONLY: the below is for Postman
+            // callback(null, true)
+            callback(new Error('Not allowed by CORS'))
+        }
+    },
     allowedHeaders: [
       "content-type",
       "x-api-key",
@@ -55,13 +64,13 @@ app.use((err: any, _req: any, res: any, _next: any) => {
 });
 
 // SuperTokens /auth middleware
-// app.use(middleware());
+app.use(middleware());
 
 // Routes
 app.use("/api", appRouter);
 
 // SuperTokens Error Handler
-// app.use(errorHandler());
+app.use(errorHandler());
 
 // Fallback route (for unknown endpoints)
 app.use((_req, res) => {
