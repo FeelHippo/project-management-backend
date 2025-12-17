@@ -24,4 +24,5 @@ const config: ConfigInterface = {
   },
 };
 
+console.log('||| This is your configuration: ', config)
 export default config;

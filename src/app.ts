@@ -24,7 +24,8 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Middlewares
 app.use(
   cors({
-    origin: "*",
+    origin: true,
+    // origin: process.env["AWS_AMP_DOMAIN"] ?? "http://localhost:3000",
     allowedHeaders: [
       "content-type",
       "x-api-key",
