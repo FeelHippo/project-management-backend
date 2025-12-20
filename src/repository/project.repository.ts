@@ -1,7 +1,7 @@
 import { ProjectModel } from "../data/project.entity";
 import { PgTableWithColumns } from "drizzle-orm/pg-core";
 import { NodePgDatabase } from "drizzle-orm/node-postgres";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 export default class ProjectRepository {
   constructor(db: NodePgDatabase, schema: PgTableWithColumns<any>) {
@@ -70,7 +70,12 @@ export default class ProjectRepository {
     for (const { property, value } of changes) {
       await this._db
         .update(this._schema)
-        .set({ [property]: value })
+        .set({
+          [property]: value,
+          [property === "status" && value === "ARCHIVED"
+            ? "archivedAt"
+            : "updatedAt"]: sql`NOW()`,
+        })
         .where(eq(this._schema["uid"], uid));
     }
   }

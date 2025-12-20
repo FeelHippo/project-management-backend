@@ -2,7 +2,7 @@
 
 This NodeJs application handles CRUD operations for the Project Management Frontend.
 
-See Swagger Documentation [here](http://project-management-backend-env.eba-srcjwhmq.eu-west-1.elasticbeanstalk.com/api-docs/).
+See Swagger Documentation [here](https://project-management-backend-env.eba-srcjwhmq.eu-west-1.elasticbeanstalk.com/api-docs/).
 So as to test the URIs through Swagger, please request the API key to me.
 
 ### Authentication
@@ -36,6 +36,8 @@ Deployment is made to an [Elastic Beanstalk](https://eu-west-1.console.aws.amazo
 
 The IAM [Role](https://us-east-1.console.aws.amazon.com/iam/home#/roles/details/AWSCodePipelineServiceRole-eu-west-1-coding-challenge-backend?section=permissions) is in charge of granting access to the [EC2](https://eu-west-1.console.aws.amazon.com/ec2/home?region=eu-west-1#InstanceDetails:instanceId=i-0ed1ec337578d8a26) instance that serves the application
 
+This is the secure domain: `https://project-management-backend-env.eba-srcjwhmq.eu-west-1.elasticbeanstalk.com`
+
 ### Architecture and Code Design
 
 The application is loosely modelled on the Repository Pattern.
@@ -57,7 +59,7 @@ Good OOP is implemented throughout the project, as well as Dependency Injection.
 ### Example CURLs
 **Create a new Project**
 ```
-curl --location 'http://localhost:3000/api/projects' \
+curl --location 'https://project-management-backend-env.eba-srcjwhmq.eu-west-1.elasticbeanstalk.com/api/projects' \
 --header 'x-api-key: sXQ8vYFpo6RjtAopYshisaToSzxRnEB5' \
 --header 'Content-Type: application/json' \
 --data '{
@@ -71,7 +73,7 @@ curl --location 'http://localhost:3000/api/projects' \
 
 **Read all projects**
 ```
-curl --location 'http://localhost:3000/api/projects' \
+curl --location 'https://project-management-backend-env.eba-srcjwhmq.eu-west-1.elasticbeanstalk.com/api/projects' \
 --header 'x-api-key: sXQ8vYFpo6RjtAopYshisaToSzxRnEB5'
 
 {
@@ -114,7 +116,7 @@ curl --location 'http://localhost:3000/api/projects' \
 
 **Read one project**
 ```
-curl --location 'http://localhost:3000/api/projects/0feacb21-7923-4348-97e2-105a8adb8f66' \
+curl --location 'https://project-management-backend-env.eba-srcjwhmq.eu-west-1.elasticbeanstalk.com/api/projects/0feacb21-7923-4348-97e2-105a8adb8f66' \
 --header 'x-api-key: sXQ8vYFpo6RjtAopYshisaToSzxRnEB5'
 
 {
@@ -139,7 +141,7 @@ curl --location 'http://localhost:3000/api/projects/0feacb21-7923-4348-97e2-105a
 
 **Modify one project**
 ```
-curl --location --request PATCH 'http://localhost:3000/api/projects/0feacb21-7923-4348-97e2-105a8adb8f66' \
+curl --location --request PATCH 'https://project-management-backend-env.eba-srcjwhmq.eu-west-1.elasticbeanstalk.com/api/projects/0feacb21-7923-4348-97e2-105a8adb8f66' \
 --header 'x-api-key: sXQ8vYFpo6RjtAopYshisaToSzxRnEB5' \
 --header 'Content-Type: application/json' \
 --data '{
@@ -157,7 +159,7 @@ No Content
 
 **Remove one project**
 ```
-curl --location --request DELETE 'http://localhost:3000/api/projects/0feacb21-7923-4348-97e2-105a8adb8f66' \
+curl --location --request DELETE 'https://project-management-backend-env.eba-srcjwhmq.eu-west-1.elasticbeanstalk.com/api/projects/0feacb21-7923-4348-97e2-105a8adb8f66' \
 --header 'x-api-key: sXQ8vYFpo6RjtAopYshisaToSzxRnEB5'
 
 200 OK

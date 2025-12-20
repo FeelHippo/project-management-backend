@@ -22,10 +22,10 @@ export class ProjectModel {
   }
 
   private readonly _uid: string;
-  private readonly _name: string;
-  private readonly _tags: string[];
-  private readonly _description: string;
-  private readonly _status: Status;
+  private _name: string;
+  private _tags: string[];
+  private _description: string;
+  private _status: Status;
   private readonly _createdAt: Date;
   private readonly _updatedAt: Date | null;
   private readonly _archivedAt: Date | null;
