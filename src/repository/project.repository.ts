@@ -75,7 +75,8 @@ export default class ProjectRepository {
           [property === "status" && value === "ARCHIVED"
             ? "archivedAt"
             : "updatedAt"]: sql`NOW()`,
-            ...( property === "status" && value !== "ARCHIVED" && { archivedAt: null } ),
+          ...(property === "status" &&
+            value !== "ARCHIVED" && { archivedAt: null }),
         })
         .where(eq(this._schema["uid"], uid));
     }

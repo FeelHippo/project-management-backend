@@ -13,6 +13,7 @@ import "./supertokens/sdk.init";
 import supertokens from "supertokens-node";
 import { middleware } from "supertokens-node/framework/express";
 import { errorHandler } from "supertokens-node/framework/express";
+import { StatusCodes } from "http-status-codes";
 
 const app = express();
 
@@ -59,6 +60,9 @@ app.use((err: any, _req: any, res: any, _next: any) => {
 
 // SuperTokens /auth middleware
 app.use(middleware());
+
+// Health
+app.get("/", (_req, res) => res.status(StatusCodes.OK).send());
 
 // Routes
 app.use("/api", appRouter);

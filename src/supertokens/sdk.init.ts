@@ -15,8 +15,11 @@ supertokens.init({
   framework: "express",
   supertokens: config.supertokens,
   appInfo,
-  recipeList: [EmailPassword.init(), Session.init({
+  recipeList: [
+    EmailPassword.init(),
+    Session.init({
       cookieSecure: true,
-  })],
+    }),
+  ],
   debug: true,
 });
